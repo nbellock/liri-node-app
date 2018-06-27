@@ -16,5 +16,15 @@
     "url": "https://github.com/nbellock/liri-node-app/issues"
   },
   "homepage": "https://github.com/nbellock/liri-node-app#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "dotenv": "^6.0.0",
+    "node-spotify-api": "^1.0.7",
+    "request": "^2.87.0",
+    "spotify-api": "0.0.0",
+    "spotify-web-api-node": "^3.1.1",
+    "twit": "^2.2.10",
+    "twitter": "^1.7.1",
+    "twitter-stream-api": "^0.5.2"
+  }
 }
