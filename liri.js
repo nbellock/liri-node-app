@@ -9,85 +9,136 @@ var fs = require("fs");
 
 
 
+// var commandTwit = process.argv[2];
+// var screenName = process.argv.slice(3).join(" ");
 
-var params = {
-    screen_name: "",
-    // count: 2
-}
-T.get('statuses/user_timeline', params, function (error, tweets, response) {
-    if (!error) {
-        console.log(tweets.length);
+// var params = {
+//     screen_name: "",
 
-        console.log(tweets[0].created_at + " - " + tweets[0].text);
-        for (let i = 0; i < tweets.length; i++) {
-            console.log(tweets[i].created_at + " - " + tweets[i].text);
-        }
+// }
+// if (process.argv.length < 3) {
+//     console.log("Error: No command entered");
+//     return
+// } else if (process.argv.length < 4) {
+//     console.log("Error: No input entered");
+//     return
+// }
 
-    } else {
-        console.log(error)
-    }
-});
+// console.log("Command: " + commandTwit);
+// console.log("Input: " + screenName);
+
+// T.get('statuses/user_timeline', screenName, function (error, tweets, response) {
+//     if (!error) {
+//         console.log(tweets.length);
+
+//         console.log(tweets[0].created_at + " - " + tweets[0].text);
+//         for (let i = 0; i < tweets.length; i++) {
+//             console.log(tweets[i].created_at + " - " + tweets[i].text);
+//         }
+
+//     } else {
+//         console.log(error)
+//     }
+
+// });
 
 
 
 
 
-/////Spotify API Call
+///Spotify API Call
 
 var spotify = new Spotify({
     id: 'c8256d043cbe4233b241edb5e8f32880',
     secret: 'db4c9e28cef543e4b1f7b440600e70cc'
 })
 
-// var songName = "Happier"
-// var spotifyParams = {
-//     type: 'track',
-//     q: "Happier"
-// }
-spotify
-    .search({
+
+if (process.argv.length < 3) {
+    console.log("Error: No command entered");
+    return
+} else if (process.argv.length < 4) {
+    console.log("Error: No input entered");
+    return
+}
+var spotifyCommand = process.argv[2];
+var spotifyInput = process.argv.slice(3).join(" ");
+console.log("Command: " + spotifyCommand);
+console.log("Input: " + spotifyInput);
+
+
+
+spotify.search({
         type: 'track',
-        query: 'Happier',
-        limit: 20
+        query: spotifyInput,
+        limit: 1
     })
     .then(function (response) {
-        console.log(response);
-    })
-    .catch(function (err) {
-        console.log(err);
+        var items = response.tracks.items[0];
+        // * Artist(s)
+        console.log("Artist(s): " + items.artists[0].name);
+
+        console.log("Test(s): " + items.tracks[0].name);
+
+
+
+
+        // ///OMDB API Call
+        // var OMDB = require('OMDBapi');
+        // var request = require("request");
+        // var command = process.argv[2];
+        // var input = process.argv.slice(3).join(" ");
+
+
+        // // We then run the request module on a URL with a JSON
+        // request("http://www.omdbapi.com/?t=" + input + "&y=&plot=short&apikey=trilogy", function (error, response, body) {
+
+        //     // If there were no errors and the response code was 200 (i.e. the request was successful)...
+        //     if (process.argv.length < 3) {
+        //         console.log("Error: No command entered");
+        //         return
+        //     } else if (process.argv.length < 4) {
+        //         console.log("Error: No input entered");
+        //         return
+        //     }
+
+        //     console.log("Command: " + command);
+        //     console.log("Input: " + input);
+
+
+        //     if (!error && response.statusCode === 200) {
+
+
+
+        //         //     Title of the movie.
+        //         console.log("Title: " + JSON.parse(body).Title);
+        //         //     * Year the movie came out.
+        //         console.log("Year: " + JSON.parse(body).Year);
+
+        //         //     * IMDB Rating of the movie.
+        //         console.log("The movie's rating is: " + JSON.parse(body).imdbRating);
+
+        //         //     * Rotten Tomatoes Rating of the movie.
+        //         console.log("Rotten Tomatoes Rating: " + JSON.parse(body).Rated);
+        //         //     * Country where the movie was produced.
+        //         console.log("Country: " + JSON.parse(body).Country);
+        //         //     * Language of the movie.
+        //         console.log("Language: " + JSON.parse(body).Language);
+
+        //         //     * Plot of the movie.
+        //         console.log("Plot: " + JSON.parse(body).Plot);
+        //         //     * Actors in the movie.
+        //         console.log("Actors In the Movie: " + JSON.parse(body).Actors);
+        //         //   ```
+
+        //         // * If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
+
+
+
+
+
+
+
+
+        // }
     });
-
-// function random() {
-//     fs.readFile("random.txt", "utf8", function (error, data) {
-//         if (error) {
-//             return console.log(error);
-//         }
-
-//         var randomChoice = data.split(",");
-//         console.log(randomChoice);
-//         if (randomChoice[0] === "spotify-this-song") {
-//             spotifyThis(randomChoice[1]);
-//         }
-
-//     })
-// }
-// random()
-// spotifyThis()
-
-
-
-///OMBD API Call
-
-// var OMBD = require('OMBD')
-// var request = require("request");
-
-// // We then run the request module on a URL with a JSON
-// request("http://www.omdbapi.com/?t=remember+the+titans&y=&plot=short&apikey=trilogy", function (error, response, body) {
-
-//     // If there were no errors and the response code was 200 (i.e. the request was successful)...
-//     if (!error && response.statusCode === 200) {
-
-//         // Then we print out the imdbRating
-//         console.log("The movie's rating is: " + JSON.parse(body).imdbRating);
-//     }
-// });
