@@ -1,0 +1,21 @@
+
+Tue Jun 26 21:58:10 +0000 2018
+test tweet
+Tue Jun 26 21:07:38 +0000 2018
+banana
+Mon Jun 25 16:56:59 +0000 2018
+Just setting up my Twitter. #myfirstTweet
+Appending this song and artist data: 
+Ed Sheeran
+Happier
+https://open.spotify.com/album/3T4tUhGYeRNVUGevb0wThu
+÷ (Deluxe)
+Appending this movie information: 
+The Avengers
+2012
+8.1
+undefined
+USA
+English, Russian, Hindi
+Earth's mightiest heroes must come together and learn to fight as a team if they are going to stop the mischievous Loki and his alien army from enslaving humanity.
+Robert Downey Jr., Chris Evans, Mark Ruffalo, Chris Hemsworth
