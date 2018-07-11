@@ -1,161 +1,129 @@
-console.log('hello')
-var env = require('dotenv').config()
-var Twitter = require('twitter');
-var Spotify = require('node-spotify-api')
-var keys = require('./keys.js')
-// var spotifyKey = new Spotify(keys.spotify);
-var T = new Twitter(keys.twitter);
-var fs = require("fs");
-
-
-
-var commandTwit = process.argv[2];
-var screenName = process.argv.slice(3).join(" ");
-
-var params = {
-    screen_name: "",
-
-}
-if (process.argv.length < 3) {
-    console.log("Error: No command entered");
-    return
-} else if (process.argv.length < 4) {
-    console.log("Error: No input entered");
-    return
-}
-
-console.log("Command: " + commandTwit);
-console.log("Input: " + screenName);
-
-T.get('statuses/user_timeline', screenName, function (error, tweets, response) {
-    if (!error) {
-        console.log(tweets.length);
-
-        console.log(tweets[0].created_at + " - " + tweets[0].text);
-        for (let i = 0; i < tweets.length; i++) {
-            console.log(tweets[i].created_at + " - " + tweets[i].text);
-        }
-
-    } else {
-        console.log(error)
-    }
-
-});
-
-
-
-
-
-///Spotify API Call
-
-var spotify = new Spotify({
-    id: 'c8256d043cbe4233b241edb5e8f32880',
-    secret: 'db4c9e28cef543e4b1f7b440600e70cc'
-})
-
-
-if (process.argv.length < 3) {
-    console.log("Error: No command entered");
-    return
-} else if (process.argv.length < 4) {
-    console.log("Error: No input entered");
-    return
-}
-var spotifyCommand = process.argv[2];
-var spotifyInput = process.argv.slice(3).join(" ");
-console.log("Command: " + spotifyCommand);
-console.log("Input: " + spotifyInput);
-
-
-spotify.search({
-        type: 'track',
-        query: spotifyInput
-    })
-    .then(function (response) {
-        var items = response.tracks.items;
-        for (item of items) {
-            console.log("------------------------------");
-            console.log("Song: " + item.name);
-            var artists = [];
-            for (artist of item.album.artists) {
-                artists.push(artist.name);
-            }
-
-            if (artists.length > 1) {
-                console.log("Artists: " + artists.join(", "));
-            } else {
-                console.log("Artist: " + artists.shift());
-            }
-
-            console.log("Preview: " + item.external_urls.spotify);
-            console.log("Album: " + item.album.name);
-            console.log("------------------------------");
-        }
-    })
-    .catch(function (error) {
-        console.log("Error: " + error);
-    });
-
-
-
-
-
-///OMDB API Call
-var OMDB = require('OMDBapi');
 var request = require("request");
-var command = process.argv[2];
-var input = process.argv.slice(3).join(" ");
+var twitter = require("twitter");
+var spotifyReq = require("node-spotify-api");
+var keys = require("./keys.js");
+var fs = require("fs");
+var args = process.argv.slice(2);
+var command = args[0];
+var userInput = args.slice(1).join(" ");
 
+if (command === "my-tweets") {
+    tweetTweet();
+} else if (command === "spotify-this-song") {
+    spotifyThis();
+} else if (command === "movie-this") {
+    movieThis();
+} else if (command === "do-what-it-says") {
+    fileSaysDo();
+} else {
+    console.log("I'm sorry, I don't understand. Please tell me a command: \nmy-tweets \nspotify-this-song \nmovie-this \ndo-what-it-says");
+}
 
-// We then run the request module on a URL with a JSON
-request("http://www.omdbapi.com/?t=" + input + "&y=&plot=short&apikey=trilogy", function (error, response, body) {
+function tweetTweet() {
+    var client = new twitter(keys.twitterKeys);
+    client.get("statuses/user_timeline", "molva_roham", function (err, tweet, response) {
+        if (err) {
+            return console.log(err);
+        } else {
+            for (var i = 0; i < tweet.length; i++) {
+                console.log(tweet[i].created_at);
+                console.log(tweet[i].text);
 
-    // If there were no errors and the response code was 200 (i.e. the request was successful)...
-    if (process.argv.length < 3) {
-        console.log("Error: No command entered");
-        return
-    } else if (process.argv.length < 4) {
-        console.log("Error: No input entered");
-        return
-    }
+                fs.appendFile("log.txt", "\n" + tweet[i].created_at + "\n" + tweet[i].text, function (err) {
+                    if (err) {
+                        console.log(err);
+                    }
+                })
+            }
+        }
+    })
+}
 
-    console.log("Command: " + command);
-    console.log("Input: " + input);
+function spotifyThis() {
+    var isInputNull = userInput === "" ? userInput = "CSS Suxxx" : userInput = userInput;
+    var spotify = new spotifyReq(keys.spotifyKeys);
 
+    spotify.search({
+        type: "track",
+        query: userInput,
+        limit: 1
+    }, function (err, data) {
+        if (err) {
+            return console.log(err);
+        } else {
+            console.log("Artist: " + data.tracks.items[0].album.artists[0].name); // artist's name
+            console.log("Song name: " + data.tracks.items[0].name) // song name
+            console.log("External url: " + data.tracks.items[0].album.external_urls.spotify) // external link
+            console.log("Album: " + data.tracks.items[0].album.name) // album name
+        }
 
-    if (!error && response.statusCode === 200) {
+        fs.appendFile("log.txt", "\nAppending this song and artist data: " +
+            "\n" + data.tracks.items[0].album.artists[0].name +
+            "\n" + data.tracks.items[0].name +
+            "\n" + data.tracks.items[0].album.external_urls.spotify +
+            "\n" + data.tracks.items[0].album.name,
+            function (err) {
+                if (err) {
+                    console.log(err);
+                }
+            })
+    })
+}
 
+function movieThis() {
+    var isInputNull = userInput === "" ? userInput = "Spaceballs" : userInput = userInput;
+    var queryUrl = "http://www.omdbapi.com/?apikey=40e9cece&t=" + userInput
 
+    request(queryUrl, function (err, response, body) {
+        if (err) {
+            return console.log(err);
+        } else {
+            var rottenExists = JSON.parse(body).Ratings[1] === undefined ? rottenExists = "N/A" : rottenExists = JSON.parse(body).Ratings[1].Value;
+            console.log("Title: " + JSON.parse(body).Title);
+            console.log("Year: " + JSON.parse(body).Year);
+            console.log("IMDB Rating: " + JSON.parse(body).imdbRating);
+            console.log("Rotten Tomatoes Rating: " + rottenExists);
+            console.log("Country: " + JSON.parse(body).Country);
+            console.log("Language: " + JSON.parse(body).Language);
+            console.log("Plot: " + JSON.parse(body).Plot);
+            console.log("Actors: " + JSON.parse(body).Actors);
+        }
 
-        //     Title of the movie.
-        console.log("Title: " + JSON.parse(body).Title);
-        //     * Year the movie came out.
-        console.log("Year: " + JSON.parse(body).Year);
+        fs.appendFile("log.txt", "\n" + "Appending this movie information: " +
+            "\n" + JSON.parse(body).Title + "\n" + JSON.parse(body).Year +
+            "\n" + JSON.parse(body).imdbRating + "\n" + JSON.parse(body).rottenExists +
+            "\n" + JSON.parse(body).Country + "\n" + JSON.parse(body).Language +
+            "\n" + JSON.parse(body).Plot + "\n" + JSON.parse(body).Actors,
+            function (err) {
+                if (err) {
+                    console.log(err);
+                }
+            })
+    })
+}
 
-        //     * IMDB Rating of the movie.
-        console.log("The movie's rating is: " + JSON.parse(body).imdbRating);
+function fileSaysDo() {
+    fs.readFile("random.txt", "utf8", function (error, data) {
+        if (error) {
+            return console.log(error);
+        } else {
+            var dataArr = data.split(",");
+            userInput = dataArr[1];
+            command = dataArr[0];
 
-        //     * Rotten Tomatoes Rating of the movie.
-        console.log("Rotten Tomatoes Rating: " + JSON.parse(body).Rated);
-        //     * Country where the movie was produced.
-        console.log("Country: " + JSON.parse(body).Country);
-        //     * Language of the movie.
-        console.log("Language: " + JSON.parse(body).Language);
+            if (command === "my-tweets") {
+                tweetTweet();
+            } else if (command === "spotify-this-song") {
+                spotifyThis();
+            } else {
+                movieThis();
+            }
+        }
 
-        //     * Plot of the movie.
-        console.log("Plot: " + JSON.parse(body).Plot);
-        //     * Actors in the movie.
-        console.log("Actors In the Movie: " + JSON.parse(body).Actors);
-        //   ```
-
-        // * If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
-
-
-
-
-
-
-
-
-    }
-});
+        fs.appendFile("log.txt", "User engaged the random file.", function (err) {
+            if (err) {
+                console.log(err);
+            }
+        })
+    });
+}
