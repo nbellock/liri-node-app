@@ -5,3 +5,7 @@ it will run the whole program including the movies and tweets. THis will happen 
 song and movie.
 
 I also couldn't figure out how to put the spotify keys in the .env file so i hard coded it. I did figure it out for twitter keys though.
+
+
+
+UPDATE:7/11/18 I figured out how to get it all working. Please disregard my notes above.
