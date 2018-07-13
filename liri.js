@@ -13,8 +13,7 @@ if (command === "my-tweets") {
     spotifyThis();
 } else if (command === "movie-this") {
     movieThis();
-    // } else if (command === "do-what-it-says") {
-    //     fileSaysDo();
+
 } else {
     console.log("Please tell me a command: \nmy-tweets \nspotify-this-song \nmovie-this \ndo-what-it-says");
 }
@@ -101,29 +100,3 @@ function movieThis() {
             })
     })
 }
-
-// function fileSaysDo() {
-//     fs.readFile("random.txt", "utf8", function (error, data) {
-//         if (error) {
-//             return console.log(error);
-//         } else {
-//             var dataArr = data.split(",");
-//             userInput = dataArr[1];
-//             command = dataArr[0];
-
-//             if (command === "my-tweets") {
-//                 tweetTweet();
-//             } else if (command === "spotify-this-song") {
-//                 spotifyThis();
-//             } else {
-//                 movieThis();
-//             }
-//         }
-
-//         fs.appendFile("log.txt", "User engaged the random file.", function (err) {
-//             if (err) {
-//                 console.log(err);
-//             }
-//         })
-//     });
-// }

@@ -59,3 +59,23 @@ Mon Jun 25 16:56:59 +0000 2018
 Just setting up my Twitter. #myfirstTweet
 Tue Jun 26 21:07:38 +0000 2018
 banana
+Tue Jun 26 21:07:38 +0000 2018
+banana
+Mon Jun 25 16:56:59 +0000 2018
+Just setting up my Twitter. #myfirstTweet
+Tue Jun 26 21:58:10 +0000 2018
+test tweet
+Appending this movie information: 
+Gladiator
+2000
+8.5
+undefined
+USA, UK
+English
+When a Roman General is betrayed, and his family murdered by an emperor's corrupt son, he comes to Rome as a gladiator to seek revenge.
+Russell Crowe, Joaquin Phoenix, Connie Nielsen, Oliver Reed
+Appending this song and artist data: 
+Ed Sheeran
+Happier
+https://open.spotify.com/album/3T4tUhGYeRNVUGevb0wThu
+÷ (Deluxe)
