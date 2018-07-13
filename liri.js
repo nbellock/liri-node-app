@@ -13,15 +13,15 @@ if (command === "my-tweets") {
     spotifyThis();
 } else if (command === "movie-this") {
     movieThis();
-} else if (command === "do-what-it-says") {
-    fileSaysDo();
+    // } else if (command === "do-what-it-says") {
+    //     fileSaysDo();
 } else {
-    console.log("I'm sorry, I don't understand. Please tell me a command: \nmy-tweets \nspotify-this-song \nmovie-this \ndo-what-it-says");
+    console.log("Please tell me a command: \nmy-tweets \nspotify-this-song \nmovie-this \ndo-what-it-says");
 }
 
 function tweetTweet() {
     var client = new twitter(keys.twitterKeys);
-    client.get("statuses/user_timeline", "molva_roham", function (err, tweet, response) {
+    client.get("statuses/user_timeline", "nbellock", function (err, tweet, response) {
         if (err) {
             return console.log(err);
         } else {
@@ -40,7 +40,7 @@ function tweetTweet() {
 }
 
 function spotifyThis() {
-    var isInputNull = userInput === "" ? userInput = "CSS Suxxx" : userInput = userInput;
+    var isInputNull = userInput === "" ? userInput = "Happier" : userInput = userInput;
     var spotify = new spotifyReq(keys.spotifyKeys);
 
     spotify.search({
@@ -71,7 +71,7 @@ function spotifyThis() {
 }
 
 function movieThis() {
-    var isInputNull = userInput === "" ? userInput = "Spaceballs" : userInput = userInput;
+    var isInputNull = userInput === "" ? userInput = "You've Got Mail" : userInput = userInput;
     var queryUrl = "http://www.omdbapi.com/?apikey=40e9cece&t=" + userInput
 
     request(queryUrl, function (err, response, body) {
@@ -102,28 +102,28 @@ function movieThis() {
     })
 }
 
-function fileSaysDo() {
-    fs.readFile("random.txt", "utf8", function (error, data) {
-        if (error) {
-            return console.log(error);
-        } else {
-            var dataArr = data.split(",");
-            userInput = dataArr[1];
-            command = dataArr[0];
+// function fileSaysDo() {
+//     fs.readFile("random.txt", "utf8", function (error, data) {
+//         if (error) {
+//             return console.log(error);
+//         } else {
+//             var dataArr = data.split(",");
+//             userInput = dataArr[1];
+//             command = dataArr[0];
 
-            if (command === "my-tweets") {
-                tweetTweet();
-            } else if (command === "spotify-this-song") {
-                spotifyThis();
-            } else {
-                movieThis();
-            }
-        }
+//             if (command === "my-tweets") {
+//                 tweetTweet();
+//             } else if (command === "spotify-this-song") {
+//                 spotifyThis();
+//             } else {
+//                 movieThis();
+//             }
+//         }
 
-        fs.appendFile("log.txt", "User engaged the random file.", function (err) {
-            if (err) {
-                console.log(err);
-            }
-        })
-    });
-}
+//         fs.appendFile("log.txt", "User engaged the random file.", function (err) {
+//             if (err) {
+//                 console.log(err);
+//             }
+//         })
+//     });
+// }
